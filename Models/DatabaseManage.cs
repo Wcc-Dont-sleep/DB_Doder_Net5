@@ -9,6 +9,8 @@ namespace DB_docker_net5.Models
     {
         public string Epidemiccontrolunitsid { get; set; }
         public string Personid { get; set; }
+        public string Epname { get; set; }
+        public string Personname { get; set; }
 
         public virtual DatabaseEpidemiccontrolunit Epidemiccontrolunits { get; set; }
         public virtual DatabasePerson Person { get; set; }

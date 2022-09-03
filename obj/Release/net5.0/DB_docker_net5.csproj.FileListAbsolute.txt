@@ -5,7 +5,6 @@ E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Release\net5.0\DB_docker_net5
 E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Release\net5.0\DB_docker_net5.runtimeconfig.json
 E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Release\net5.0\DB_docker_net5.runtimeconfig.dev.json
 E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Release\net5.0\DB_docker_net5.dll
-E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Release\net5.0\ref\DB_docker_net5.dll
 E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Release\net5.0\DB_docker_net5.pdb
 E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Release\net5.0\Humanizer.dll
 E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Release\net5.0\System.Net.Http.Formatting.dll
@@ -53,7 +52,6 @@ E:\File\DataBase\DB_docker_net5\DB_docker_net5\obj\Release\net5.0\DB_docker_net5
 E:\File\DataBase\DB_docker_net5\DB_docker_net5\obj\Release\net5.0\DB_docker_net5.MvcApplicationPartsAssemblyInfo.cs
 E:\File\DataBase\DB_docker_net5\DB_docker_net5\obj\Release\net5.0\DB_docker_net5.MvcApplicationPartsAssemblyInfo.cache
 E:\File\DataBase\DB_docker_net5\DB_docker_net5\obj\Release\net5.0\staticwebassets\DB_docker_net5.StaticWebAssets.Manifest.cache
-E:\File\DataBase\DB_docker_net5\DB_docker_net5\obj\Release\net5.0\staticwebassets\DB_docker_net5.StaticWebAssets.xml
 E:\File\DataBase\DB_docker_net5\DB_docker_net5\obj\Release\net5.0\scopedcss\bundle\DB_docker_net5.styles.css
 E:\File\DataBase\DB_docker_net5\DB_docker_net5\obj\Release\net5.0\DB_docker_net5.RazorTargetAssemblyInfo.cache
 E:\File\DataBase\DB_docker_net5\DB_docker_net5\obj\Release\net5.0\DB_docker_net5.csproj.CopyComplete
@@ -64,3 +62,15 @@ E:\File\DataBase\DB_docker_net5\DB_docker_net5\obj\Release\net5.0\DB_docker_net5
 E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Release\net5.0\Dockerfile
 E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Release\net5.0\System.Web.Cors.dll
 E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Release\net5.0\System.Web.Http.Cors.dll
+E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Release\net5.0\JWT.dll
+E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Release\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Release\net5.0\Microsoft.IdentityModel.Abstractions.dll
+E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Release\net5.0\Microsoft.IdentityModel.JsonWebTokens.dll
+E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Release\net5.0\Microsoft.IdentityModel.Logging.dll
+E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Release\net5.0\Microsoft.IdentityModel.Protocols.dll
+E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Release\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Release\net5.0\Microsoft.IdentityModel.Tokens.dll
+E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Release\net5.0\RestSharp.dll
+E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Release\net5.0\System.IdentityModel.Tokens.Jwt.dll
+E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Release\net5.0\System.Json.dll
+E:\File\DataBase\DB_docker_net5\DB_docker_net5\obj\Release\net5.0\refint\DB_docker_net5.dll

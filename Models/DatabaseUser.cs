@@ -10,8 +10,8 @@ namespace DB_docker_net5.Models
         public string Id { get; set; }
         public string Password { get; set; }
         public string Loginstatus { get; set; }
-
         public string Username { get; set; }
+
         public virtual DatabasePerson IdNavigation { get; set; }
     }
 }

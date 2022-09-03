@@ -38,7 +38,7 @@ namespace DB_docker_net5
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DB_docker_net5", Version = "v1" });
             });
-            /*远程
+            /*
             services.AddCors(options =>
             {
                 options.AddPolicy("Domain", builder =>
@@ -49,6 +49,7 @@ namespace DB_docker_net5
                 });
             });
             */
+            
             services.AddCors(options =>
             {
                 options.AddPolicy("all", builder =>
@@ -59,7 +60,7 @@ namespace DB_docker_net5
                     //.AllowCredentials();//指定处理cookie
                 });
             });
-
+            
             //token
             services.Configure<tokenModel>(Configuration.GetSection("JWTTokenconfig"));
             var token = Configuration.GetSection("JWTTokenconfig").Get<tokenModel>();

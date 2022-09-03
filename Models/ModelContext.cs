@@ -23,6 +23,7 @@ namespace DB_docker_net5.Models
         public virtual DbSet<AqQueue> AqQueues { get; set; }
         public virtual DbSet<AqQueueTable> AqQueueTables { get; set; }
         public virtual DbSet<AqSchedule> AqSchedules { get; set; }
+        public virtual DbSet<DatabaseAsd> DatabaseAsds { get; set; }
         public virtual DbSet<DatabaseCaserecord> DatabaseCaserecords { get; set; }
         public virtual DbSet<DatabaseCourier> DatabaseCouriers { get; set; }
         public virtual DbSet<DatabaseDemandform> DatabaseDemandforms { get; set; }
@@ -190,6 +191,7 @@ namespace DB_docker_net5.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseOracle("Data Source=121.205.88.204/ORCLCDB;Password=123456;User ID=system;");
             }
         }
@@ -453,12 +455,47 @@ namespace DB_docker_net5.Models
                     .HasColumnName("START_TIME");
             });
 
+            modelBuilder.Entity<DatabaseAsd>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("DATABASE_ASD");
+
+                entity.Property(e => e.Id)
+                    .IsRequired()
+                    .HasMaxLength(23)
+                    .IsUnicode(false)
+                    .HasColumnName("ID")
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.Isolationspotname)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("ISOLATIONSPOTNAME");
+
+                entity.Property(e => e.Signindate)
+                    .HasColumnType("DATE")
+                    .HasColumnName("SIGNINDATE");
+
+                entity.Property(e => e.Signoutdate)
+                    .HasColumnType("DATE")
+                    .HasColumnName("SIGNOUTDATE");
+
+                entity.HasOne(d => d.IdNavigation)
+                    .WithMany()
+                    .HasForeignKey(d => d.Id)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("SYS_C007677");
+
+                entity.HasOne(d => d.IsolationspotnameNavigation)
+                    .WithMany()
+                    .HasForeignKey(d => d.Isolationspotname)
+                    .HasConstraintName("SYS_C007678");
+            });
+
             modelBuilder.Entity<DatabaseCaserecord>(entity =>
             {
                 entity.ToTable("DATABASE_CASERECORD");
-
-                entity.HasIndex(e => new { e.Source, e.Discoverdate, e.Casetype }, "PK_DATABASE_CASERECORD")
-                    .IsUnique();
 
                 entity.Property(e => e.Id)
                     .HasMaxLength(23)
@@ -467,13 +504,13 @@ namespace DB_docker_net5.Models
                     .IsFixedLength(true);
 
                 entity.Property(e => e.Casetype)
-                    .IsRequired()
                     .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("CASETYPE");
 
                 entity.Property(e => e.Discoverdate)
-                    .HasColumnType("DATE")
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
                     .HasColumnName("DISCOVERDATE");
 
                 entity.Property(e => e.Location)
@@ -482,7 +519,6 @@ namespace DB_docker_net5.Models
                     .HasColumnName("LOCATION");
 
                 entity.Property(e => e.Source)
-                    .IsRequired()
                     .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("SOURCE");
@@ -541,10 +577,6 @@ namespace DB_docker_net5.Models
                     .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("GOODSNAME");
-
-                entity.Property(e => e.Isallocated)
-                    .HasPrecision(2)
-                    .HasColumnName("ISALLOCATED");
 
                 entity.Property(e => e.Num)
                     .HasColumnType("NUMBER(20)")
@@ -619,25 +651,11 @@ namespace DB_docker_net5.Models
                     .HasColumnName("ID")
                     .IsFixedLength(true);
 
-                entity.Property(e => e.Loginstatus)
-                    .IsRequired()
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .HasColumnName("LOGINSTATUS")
-                    .IsFixedLength(true);
-
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("NAME");
-
-                entity.Property(e => e.Password)
-                    .IsRequired()
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .HasColumnName("PASSWORD")
-                    .IsFixedLength(true);
             });
 
             modelBuilder.Entity<DatabaseDonorpurchase>(entity =>
@@ -661,7 +679,7 @@ namespace DB_docker_net5.Models
 
                 entity.Property(e => e.Purchasetime)
                     .IsRequired()
-                    .HasMaxLength(20)
+                    .HasMaxLength(30)
                     .IsUnicode(false)
                     .HasColumnName("PURCHASETIME");
 
@@ -703,24 +721,16 @@ namespace DB_docker_net5.Models
                     .IsUnicode(false)
                     .HasColumnName("DISTRICTBELONGS");
 
-                entity.Property(e => e.Loginstatus)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .HasColumnName("LOGINSTATUS")
-                    .IsFixedLength(true);
-
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("NAME");
 
-                entity.Property(e => e.Password)
-                    .IsRequired()
-                    .HasMaxLength(10)
+                entity.Property(e => e.Phonenumber)
+                    .HasMaxLength(20)
                     .IsUnicode(false)
-                    .HasColumnName("PASSWORD")
-                    .IsFixedLength(true);
+                    .HasColumnName("PHONENUMBER");
 
                 entity.Property(e => e.Servicehotline)
                     .HasMaxLength(11)
@@ -807,19 +817,15 @@ namespace DB_docker_net5.Models
 
             modelBuilder.Entity<DatabaseIsolationassign>(entity =>
             {
-                entity.HasKey(e => e.Id)
-                    .HasName("DATABASE_ISOLATIONASSIGN_PK");
-
                 entity.ToTable("DATABASE_ISOLATIONASSIGN");
 
                 entity.Property(e => e.Id)
-                    .IsRequired()
                     .HasMaxLength(23)
                     .IsUnicode(false)
                     .HasColumnName("ID")
                     .IsFixedLength(true);
 
-                entity.Property(e => e.Isolationspotname)                   
+                entity.Property(e => e.Isolationspotname)
                     .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("ISOLATIONSPOTNAME");
@@ -832,20 +838,16 @@ namespace DB_docker_net5.Models
                     .HasColumnType("DATE")
                     .HasColumnName("SIGNOUTDATE");
 
-               
-
                 entity.HasOne(d => d.IdNavigation)
-                    .WithMany()
-                    .HasForeignKey(d => d.Id)
+                    .WithOne(p => p.DatabaseIsolationassign)
+                    .HasForeignKey<DatabaseIsolationassign>(d => d.Id)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("SYS_C008089");
-                /*
+                    .HasConstraintName("ISOPERSONID");
+
                 entity.HasOne(d => d.IsolationspotnameNavigation)
-                    .WithMany()
+                    .WithMany(p => p.DatabaseIsolationassigns)
                     .HasForeignKey(d => d.Isolationspotname)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("POINTNAME");
-                */
             });
 
             modelBuilder.Entity<DatabaseManage>(entity =>
@@ -865,6 +867,16 @@ namespace DB_docker_net5.Models
                     .IsUnicode(false)
                     .HasColumnName("PERSONID")
                     .IsFixedLength(true);
+
+                entity.Property(e => e.Epname)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("EPNAME");
+
+                entity.Property(e => e.Personname)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("PERSONNAME");
 
                 entity.HasOne(d => d.Epidemiccontrolunits)
                     .WithMany(p => p.DatabaseManages)
@@ -918,13 +930,11 @@ namespace DB_docker_net5.Models
                     .IsFixedLength(true);
 
                 entity.Property(e => e.Address)
-                    .IsRequired()
                     .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("ADDRESS");
 
                 entity.Property(e => e.Age)
-                    .IsRequired()
                     .HasMaxLength(3)
                     .IsUnicode(false)
                     .HasColumnName("AGE")
@@ -937,14 +947,11 @@ namespace DB_docker_net5.Models
                     .HasColumnName("GENDER")
                     .IsFixedLength(true);
 
-
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("NAME");
-
-              
 
                 entity.Property(e => e.Phonenumber)
                     .HasMaxLength(11)
@@ -955,7 +962,6 @@ namespace DB_docker_net5.Models
                 entity.HasOne(d => d.AddressNavigation)
                     .WithMany(p => p.DatabasePeople)
                     .HasForeignKey(d => d.Address)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("ADDRESS");
             });
 
@@ -989,18 +995,44 @@ namespace DB_docker_net5.Models
                     .IsFixedLength(true);
 
                 entity.Property(e => e.Detectiontime)
-                    .HasColumnType("DATE")
-                    .HasColumnName("DETECTIONTIME");
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("DETECTIONTIME")
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.Gender)
+                    .HasColumnType("NUMBER(38)")
+                    .HasColumnName("GENDER");
+
+                entity.Property(e => e.Idcard)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("IDCARD");
 
                 entity.Property(e => e.Institutionname)
-                    .IsRequired()
                     .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("INSTITUTIONNAME");
 
-                entity.Property(e => e.Samplingtime)
-                    .HasColumnType("DATE")
-                    .HasColumnName("SAMPLINGTIME");
+                entity.Property(e => e.Name)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("NAME");
+
+                entity.Property(e => e.Phonenumber)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("PHONENUMBER");
+
+                entity.Property(e => e.Place)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("PLACE");
+
+                entity.Property(e => e.Testresult)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("TESTRESULT");
 
                 entity.HasOne(d => d.IdNavigation)
                     .WithOne(p => p.DatabaseSampling)
@@ -1011,7 +1043,6 @@ namespace DB_docker_net5.Models
                 entity.HasOne(d => d.InstitutionnameNavigation)
                     .WithMany(p => p.DatabaseSamplings)
                     .HasForeignKey(d => d.Institutionname)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("INSTITUTIONNAE");
             });
 
@@ -1294,7 +1325,7 @@ namespace DB_docker_net5.Models
 
             modelBuilder.Entity<DatabaseUnitspurchase>(entity =>
             {
-                entity.HasKey(e => e.Goodsid);
+                entity.HasKey(e => new { e.Goodsid, e.Epidemiccontrolunitsid });
 
                 entity.ToTable("DATABASE_UNITSPURCHASE");
 
@@ -1313,15 +1344,11 @@ namespace DB_docker_net5.Models
 
                 entity.Property(e => e.Purchasetime)
                     .IsRequired()
-                    .HasMaxLength(10)
+                    .HasMaxLength(30)
                     .IsUnicode(false)
                     .HasColumnName("PURCHASETIME");
 
-                entity.HasOne(d => d.Epidemiccontrolunits)
-                    .WithMany(p => p.DatabaseUnitspurchases)
-                    .HasForeignKey(d => d.Epidemiccontrolunitsid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("SYS_C007694");
+              
 
                 entity.HasOne(d => d.Goods)
                     .WithOne(p => p.DatabaseUnitspurchase)
@@ -1340,12 +1367,6 @@ namespace DB_docker_net5.Models
                     .HasColumnName("ID")
                     .IsFixedLength(true);
 
-                entity.Property(e => e.Username)
-                   .HasMaxLength(23)
-                   .IsUnicode(false)
-                   .HasColumnName("USERNAME")
-                   .IsFixedLength(true);
-
                 entity.Property(e => e.Loginstatus)
                     .IsRequired()
                     .HasMaxLength(20)
@@ -1357,6 +1378,11 @@ namespace DB_docker_net5.Models
                     .HasMaxLength(10)
                     .IsUnicode(false)
                     .HasColumnName("PASSWORD");
+
+                entity.Property(e => e.Username)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("USERNAME");
 
                 entity.HasOne(d => d.IdNavigation)
                     .WithOne(p => p.DatabaseUser)
@@ -1398,49 +1424,60 @@ namespace DB_docker_net5.Models
 
             modelBuilder.Entity<DatabaseVolunteer>(entity =>
             {
-                entity.HasKey(e => new { e.Location, e.Servedate, e.Origin, e.Volunteertype });
-
                 entity.ToTable("DATABASE_VOLUNTEER");
 
-                entity.Property(e => e.Location)
-                    .HasMaxLength(20)
-                    .IsUnicode(false)
-                    .HasColumnName("LOCATION");
-
-                entity.Property(e => e.Servedate)
-                    .HasMaxLength(20)
-                    .IsUnicode(false)
-                    .HasColumnName("SERVEDATE");
-
-                entity.Property(e => e.Origin)
-                    .HasMaxLength(20)
-                    .IsUnicode(false)
-                    .HasColumnName("ORIGIN");
-
-                entity.Property(e => e.Volunteertype)
-                    .HasMaxLength(20)
-                    .IsUnicode(false)
-                    .HasColumnName("VOLUNTEERTYPE");
+                entity.HasIndex(e => new { e.Location, e.Servedate, e.Origin, e.Volunteertype }, "PK_DATABASE_VOLUNTEER")
+                    .IsUnique();
 
                 entity.Property(e => e.Id)
-                    .IsRequired()
                     .HasMaxLength(23)
                     .IsUnicode(false)
                     .HasColumnName("ID")
                     .IsFixedLength(true);
 
+                entity.Property(e => e.Location)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("LOCATION");
+
+                entity.Property(e => e.Origin)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("ORIGIN");
+
+                entity.Property(e => e.Servedate)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false)
+                    .HasColumnName("SERVEDATE");
+
+                entity.Property(e => e.Volunteertype)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("VOLUNTEERTYPE");
+
                 entity.HasOne(d => d.IdNavigation)
-                    .WithMany(p => p.DatabaseVolunteers)
-                    .HasForeignKey(d => d.Id)
+                    .WithOne(p => p.DatabaseVolunteer)
+                    .HasForeignKey<DatabaseVolunteer>(d => d.Id)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("SYS_C007699");
             });
 
             modelBuilder.Entity<DatabaseWritedemandform>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => new { e.Personid, e.Demandformid })
+                    .HasName("DATABASE_WRITEDEMANDFORM_PK");
 
                 entity.ToTable("DATABASE_WRITEDEMANDFORM");
+
+                entity.Property(e => e.Personid)
+                    .HasMaxLength(23)
+                    .IsUnicode(false)
+                    .HasColumnName("PERSONID")
+                    .IsFixedLength(true);
 
                 entity.Property(e => e.Demandformid)
                     .HasMaxLength(20)
@@ -1448,26 +1485,20 @@ namespace DB_docker_net5.Models
                     .HasColumnName("DEMANDFORMID")
                     .IsFixedLength(true);
 
-                entity.Property(e => e.Personid)
-                    .IsRequired()
-                    .HasMaxLength(23)
-                    .IsUnicode(false)
-                    .HasColumnName("PERSONID")
-                    .IsFixedLength(true);
-
                 entity.Property(e => e.Writetime)
                     .IsRequired()
-                    .HasMaxLength(20)
+                    .HasMaxLength(30)
                     .IsUnicode(false)
                     .HasColumnName("WRITETIME");
 
                 entity.HasOne(d => d.Demandform)
-                    .WithMany()
+                    .WithMany(p => p.DatabaseWritedemandforms)
                     .HasForeignKey(d => d.Demandformid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("SYS_C007689");
 
                 entity.HasOne(d => d.Person)
-                    .WithMany()
+                    .WithMany(p => p.DatabaseWritedemandforms)
                     .HasForeignKey(d => d.Personid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("SYS_C007700");

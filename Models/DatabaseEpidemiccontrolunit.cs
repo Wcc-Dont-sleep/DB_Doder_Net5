@@ -20,8 +20,7 @@ namespace DB_docker_net5.Models
         public string Districtbelongs { get; set; }
         public string Address { get; set; }
         public string Servicehotline { get; set; }
-        public string Password { get; set; }
-        public string Loginstatus { get; set; }
+        public string Phonenumber { get; set; }
 
         public virtual ICollection<DatabaseDonatetounit> DatabaseDonatetounits { get; set; }
         public virtual ICollection<DatabaseManage> DatabaseManages { get; set; }

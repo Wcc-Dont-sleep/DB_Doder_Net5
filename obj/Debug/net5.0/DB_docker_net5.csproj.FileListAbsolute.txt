@@ -72,3 +72,5 @@ E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Debug\net5.0\Microsoft.Identi
 E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
 E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Debug\net5.0\System.IdentityModel.Tokens.Jwt.dll
 E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Debug\net5.0\JWT.dll
+E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Debug\net5.0\RestSharp.dll
+E:\File\DataBase\DB_docker_net5\DB_docker_net5\bin\Debug\net5.0\System.Json.dll

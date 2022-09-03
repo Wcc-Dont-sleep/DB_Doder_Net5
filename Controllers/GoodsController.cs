@@ -21,6 +21,38 @@ namespace DB_docker_net5.Controllers
             myContext = modelContext;
         }
 
+        [HttpGet]
+        public Dictionary<string, dynamic> GetDonorInfo()
+        {
+            List<Dictionary<string, dynamic>> donateData_list = new();
+            Dictionary<string, dynamic> data = new();
+            var donate_list = myContext.DatabaseDonatetounits;
+
+            foreach(var donate in donate_list)
+            {
+                var ep = myContext.DatabaseEpidemiccontrolunits.Single(a => a.Id == donate.Epidemiccontrolunitsid);
+
+                Dictionary<string, dynamic> donatedata = new();
+
+                string donorname = myContext.DatabaseDonors.Single(a => a.Id == donate.Donorid).Name;
+
+                donatedata.Add("donateName", donorname);
+                donatedata.Add("donateID", donate.Donorid);
+                donatedata.Add("donateTime", donate.Donatetime);
+                donatedata.Add("donateOrganization", ep.Name);
+                donatedata.Add("donateOrganizationID",ep.Id);
+                donatedata.Add("city", ep.Citybelongs);
+                donatedata.Add("district", ep.Districtbelongs);
+                donatedata.Add("contactAddress", ep.Address);
+
+                donateData_list.Add(donatedata);
+            }
+            data.Add("donatedata", donateData_list);
+            Result res = new(20000, "success", data);
+            return res.Info;
+
+        }
+
         [HttpPost]
         public Dictionary<string, dynamic> Donor(dynamic request)
         {

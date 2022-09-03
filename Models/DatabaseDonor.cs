@@ -15,8 +15,6 @@ namespace DB_docker_net5.Models
 
         public string Name { get; set; }
         public string Id { get; set; }
-        public string Password { get; set; }
-        public string Loginstatus { get; set; }
 
         public virtual ICollection<DatabaseDonatetounit> DatabaseDonatetounits { get; set; }
         public virtual ICollection<DatabaseDonorpurchase> DatabaseDonorpurchases { get; set; }

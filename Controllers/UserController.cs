@@ -57,8 +57,8 @@ namespace DB_docker_net5.Controllers
                     strings[0] = "user";
                     data.Add("roles", strings);
                 }
-                   
-                data.Add("phontNumber", person.Phonenumber);
+                data.Add("name", user.Username);
+                data.Add("phoneNumber", person.Phonenumber);
                 data.Add("ID", person.Id);
                 data.Add("age", person.Age);
                 data.Add("gender", person.Gender);
@@ -110,6 +110,7 @@ namespace DB_docker_net5.Controllers
             string age = postdata.GetProperty("age").ToString();
             string phoneNumber = postdata.GetProperty("phoneNumber").ToString();
             string address = postdata.GetProperty("address").ToString();
+            string Name = postdata.GetProperty("Name").ToString();
 
             DatabaseUser user = new();
             user.Id = ID;
@@ -121,7 +122,7 @@ namespace DB_docker_net5.Controllers
 
             DatabasePerson person = new();
             person.Id = ID;
-            
+            person.Name = Name;
             person.Gender = gender;
             
             person.Age = age;
@@ -139,6 +140,13 @@ namespace DB_docker_net5.Controllers
            
             string userName = postdata.GetProperty("userName").ToString();
             string passWord = postdata.GetProperty("passWord").ToString();
+
+            bool isSuccess = myContext.DatabaseUsers.Any(a => a.Id == userName);
+            if (!isSuccess)
+            {
+                Result res = new(0, "不存在的用户名");
+                return res.Info;
+            }
 
             var user = myContext.DatabaseUsers.Single(a => a.Id == userName);
             string password = user.Password;
@@ -175,23 +183,34 @@ namespace DB_docker_net5.Controllers
             }
             
         }
+
         [HttpPost("password")]
-        public Dictionary<string, dynamic> Password(string oldpasswd, string newpasswd)
+        public Dictionary<string, dynamic> password([FromBody] dynamic postdata)
         {
+           
+
+            string oldpasswd = postdata.GetProperty("oldPassWord").ToString();
+            string newpasswd = postdata.GetProperty("newPassWord").ToString();
+
+          
+
             int code = 50008;
             string mes = "wrong password";
+            bool isSuccess = myContext.DatabaseUsers.Any(b => b.Password == oldpasswd);
+            if (!isSuccess)
+            {
+                Result res = new(0, "输入旧密码错误");
+                return res.Info;
+            }
+
             DatabaseUser user = myContext.DatabaseUsers.Single(b => b.Password == oldpasswd);
-            if (oldpasswd != user.Password.Trim())
-            {
-                ;
-            }
-            else
-            {
-                user.Password = newpasswd;
-                myContext.SaveChanges();
-                code = 20000;
-                mes = "success";
-            }
+
+
+            user.Password = newpasswd;
+            myContext.SaveChanges();
+            code = 20000;
+            mes = "success";
+
             Result info = new Result(code, mes);
             return info.Info;
         }
